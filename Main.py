@@ -109,17 +109,17 @@ class Application(object):
             return
 
         if(button == 3):
-            self.camera.change_distance(0.1)
+            self.camera.change_distance(-0.1)
             return
 
         if(button == 4):
-            self.camera.change_distance(-0.1)
+            self.camera.change_distance(0.1)
             return
 
 
 glutInit()
 glutInitDisplayMode(GLUT_DEPTH | GLUT_RGBA)
-glutInitWindowSize(500, 500)
+glutInitWindowSize(800, 800)
 glutInitWindowPosition(0, 0)
 glutCreateWindow(b"OpenGL Testing")
 app = Application()

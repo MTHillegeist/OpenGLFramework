@@ -5,14 +5,12 @@ import numpy as np
 class Camera:
     def __init__(self):
         super(Camera, self).__init__()
-        self.target = [0, 0, 0]
-        self.pos = [0, 2, 2]
-        self.up = [0, 1, 0]
+        self.target = np.array([0, 0, 0])
+        self.pos = np.array( [0, 2, 2] )
+        self.up = np.array([0, 1, 0])
 
     def rotate_around_origin(self, horizontal_angle, vertical_angle):
-        pos_vec = np.array(self.pos)
-        up_vec = np.array(self.up)
-        cross_vec = np.cross( pos_vec, up_vec)
+        cross_vec = np.cross( self.pos, self.up)
         #Normalize the vector.
         cross_vec = cross_vec / math.sqrt(np.dot(cross_vec, cross_vec))
 
@@ -22,25 +20,20 @@ class Camera:
 
         rot_matrix_cross = Camera.rotation_matrix(cross_vec, vertical_angle)
 
-        rot_res = rot_matrix_cross @ rot_matrix_x @ pos_vec
-        self.pos[0] = rot_res[0]
-        self.pos[1] = rot_res[1]
-        self.pos[2] = rot_res[2]
+        rot_res = rot_matrix_cross @ rot_matrix_x @ self.pos
+        self.pos = rot_res
 
     def change_distance(self, delta_distance):
         pos_vec = np.array(self.pos)
-        curr_distance = sqrt(np.dot(pos_vec, pos_vec))
-        norm_pos = pos_vec / curr_distance
+        curr_distance = sqrt(np.dot(self.pos, self.pos))
+        norm_pos = self.pos / curr_distance
         new_dist = curr_distance + delta_distance
 
         if(new_dist < 0.1):
             new_dist = 0.1
 
         new_pos = norm_pos * new_dist
-
-        self.pos[0] = new_pos[0]
-        self.pos[1] = new_pos[1]
-        self.pos[2] = new_pos[2]
+        self.pos = new_pos
 
     #Pulled from stackoverflow.
     def rotation_matrix(axis, theta):
