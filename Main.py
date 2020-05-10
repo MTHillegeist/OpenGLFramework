@@ -81,8 +81,11 @@ class Application(object):
     def reshape(self, w, h):
         glViewport(0, 0, w, h)
         glMatrixMode(GL_PROJECTION)
+
+        f_width = w / 1000
+        f_height = h / 1000
         glLoadIdentity()
-        glFrustum(-1.0, 1.0, -1.0, 1.0, 1.5, 20.0)
+        glFrustum(-f_width, f_width, -f_height, f_height, 1.5, 20.0)
         glMatrixMode(GL_MODELVIEW)
 
     def keyboard_input(self, key, x, y):
