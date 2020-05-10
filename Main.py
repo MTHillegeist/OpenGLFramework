@@ -102,19 +102,19 @@ class Application(object):
             self.mouse_last_y = y
 
     def mouse_input(self, button, state, x, y):
-        if(button == 0):
+        if(button == GLUT_LEFT_BUTTON):
             self.mouse_move_valid = (state == GLUT_DOWN)
             self.mouse_last_x = x
             self.mouse_last_y = y
+            return
 
         if(button == 3):
-            print(self.camera.pos)
-            self.camera.pos[1] += 0.1
-            self.camera.pos[2] += 0.1
+            self.camera.change_distance(0.1)
+            return
+
         if(button == 4):
-            self.camera.pos[1] -= 0.1
-            self.camera.pos[2] -= 0.1
-            print(self.camera.pos)
+            self.camera.change_distance(-0.1)
+            return
 
 
 glutInit()

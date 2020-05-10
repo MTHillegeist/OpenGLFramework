@@ -27,6 +27,21 @@ class Camera:
         self.pos[1] = rot_res[1]
         self.pos[2] = rot_res[2]
 
+    def change_distance(self, delta_distance):
+        pos_vec = np.array(self.pos)
+        curr_distance = sqrt(np.dot(pos_vec, pos_vec))
+        norm_pos = pos_vec / curr_distance
+        new_dist = curr_distance + delta_distance
+
+        if(new_dist < 0.1):
+            new_dist = 0.1
+
+        new_pos = norm_pos * new_dist
+
+        self.pos[0] = new_pos[0]
+        self.pos[1] = new_pos[1]
+        self.pos[2] = new_pos[2]
+
     #Pulled from stackoverflow.
     def rotation_matrix(axis, theta):
         """
