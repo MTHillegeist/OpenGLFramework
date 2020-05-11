@@ -41,7 +41,7 @@ class Application(object):
         self.lastFrameTime = time.time()
         self.runTime = self.runTime + delta_t
 
-        #self.angle += 20.0 * delta_t % 360
+        self.scene.update(delta_t)
 
         self.draw()
         #self.draw_cube_test()

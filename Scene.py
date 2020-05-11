@@ -3,13 +3,15 @@ from OpenGL.GLU import *
 from OpenGL.GLUT import *
 import DrawShapes as ds
 import Camera
+import numpy as np
+import math
 
 class Scene():
     def __init__(self):
         super(Scene, self).__init__()
 
 
-    def update(self):
+    def update(self, delta_t):
         pass
 
     def draw(self):
@@ -21,10 +23,30 @@ class Scene():
     def mouse_input(self, x, y):
         pass
 
+class Planet():
+    def __init__(self):
+        self.distance = 0.0
+        self.orbit_angle = 0.0
+        self.speed = 0.0
+
+        self.relative_angle = 0.0
+        self.axis = None
+        self.rotation_speed = 0.0
+
+        self.size = 1.0
+        self.shape = None
+
+    def update(self, delta_t):
+        self.orbit_angle += delta_t * self.speed
+        self.relative_angle += delta_t * self.rotation_speed
+
+
 class Scene1(Scene):
     def __init__(self):
         super(Scene, self).__init__()
         self.camera = Camera.Camera()
+        self.camera.pos = np.array([0, 10, 10])
+        self.planets = []
 
         red = (0.8, 0.1, 0.0, 1.0)
         blue = (0.0, 0.0, 1.0, 1.0)
@@ -43,16 +65,64 @@ class Scene1(Scene):
         ds.DrawCube()
         glEndList()
 
+        self.sun = Planet()
+        self.sun.size = 2.0
+        self.planets.append(self.sun)
+
+        self.planet1 = Planet()
+        self.planet1.distance = 2.0
+        self.planet1.speed = 10.0
+        self.planet1.size = 0.25
+        self.planet1.axis = np.array([0,0,1])
+        self.planet1.rotation_speed = 30.0
+        self.planets.append(self.planet1)
+
+        self.planet2 = Planet()
+        self.planet2.distance = 5.0
+        self.planet2.speed = 20.0
+        self.planet2.orbit_angle = 180.0
+        self.planet2.size = 0.5
+        self.planet2.axis = np.array([0,math.sqrt(2)/2,math.sqrt(2)/2])
+        self.planet2.relative_angle = 230.0
+        self.planet2.rotation_speed = 10.0
+        self.planets.append(self.planet2)
+
+        self.planet3 = Planet()
+        self.planet3.distance = 3.0
+        self.planet3.speed = 40.0
+        self.planet3.orbit_angle = 45.0
+        self.planet3.size = 0.5
+        self.planet3.axis = np.array([math.sqrt(2)/2,0,math.sqrt(2)/2])
+        self.planet3.relative_angle = 50.0
+        self.planet3.rotation_speed = 5.0
+        self.planets.append(self.planet3)
+
+    def update(self, delta_t):
+        for planet in self.planets:
+            planet.update(delta_t)
+
     def draw(self):
         glLoadIdentity()
         cam = self.camera
         gluLookAt(cam.pos[0], cam.pos[1], cam.pos[2],
                    cam.target[0], cam.target[1], cam.target[2],
                    cam.up[0], cam.up[1], cam.up[2])
-        glPushMatrix()
-        glCallList(self.cube1)
+
+
+        for planet in self.planets:
+            glPushMatrix()
+            glRotatef(planet.orbit_angle, 0.0, 1.0, 0.0)
+            glTranslatef(planet.distance, 0.0, 0.0)
+            if(planet.axis is not None):
+                x, y, z = planet.axis
+                glRotatef(planet.relative_angle, x, y, z)
+            glScalef(planet.size, planet.size, planet.size)
+
+            if(planet.shape == None):
+                glCallList(self.cube1)
+
+            glPopMatrix()
         glFlush()
-        glPopMatrix()
 
     def mouse_move(self, x, y):
         if(self.mouse_move_valid):
