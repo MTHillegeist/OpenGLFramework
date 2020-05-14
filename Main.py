@@ -34,6 +34,9 @@ class Application(object):
         # glDisable(GL_CULL_FACE)
         glMatrixMode(GL_MODELVIEW)
 
+        glEnable(GL_LIGHTING)
+        glEnable(GL_LIGHT0)
+
         self.lastFrameTime = time.time()
 
     def main_loop(self):

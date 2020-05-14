@@ -47,6 +47,12 @@ class Scene1(Scene):
         self.camera = Camera.Camera()
         self.camera.pos = np.array([0, 10, 10])
         self.planets = []
+        self.mat_spec= [1.0, 1.0, 1.0, 1.0]
+        self.mat_shin = [50.0]
+        self.light_pos = [0.0, 0.0, 0.0, 1.0]
+
+
+
 
         red = (0.8, 0.1, 0.0, 1.0)
         blue = (0.0, 0.0, 1.0, 1.0)
@@ -59,8 +65,6 @@ class Scene1(Scene):
 
         self.cube1 = glGenLists(1)
         glNewList(self.cube1, GL_COMPILE)
-        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red)
-        glColor3f(red[0], red[1], red[2])
         glPolygonMode(GL_FRONT, GL_FILL)
         ds.DrawCube()
         glEndList()
@@ -107,7 +111,10 @@ class Scene1(Scene):
         gluLookAt(cam.pos[0], cam.pos[1], cam.pos[2],
                    cam.target[0], cam.target[1], cam.target[2],
                    cam.up[0], cam.up[1], cam.up[2])
-
+        glLightfv(GL_LIGHT0, GL_POSITION, self.light_pos)
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.5, 0.5, 0.5])
+        glLightfv(GL_LIGHT0, GL_AMBIENT, [0.0, 0.0, 0.0])
+        glLightfv(GL_LIGHT0, GL_SPECULAR, [0.5, 0.5, 0.5])
 
         for planet in self.planets:
             glPushMatrix()

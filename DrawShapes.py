@@ -54,7 +54,11 @@ def DrawCube():
     for faceIndex in range(0, 6):
         #print("Begin drawing face %d" % faceIndex)
         glNormal3f(normals[faceIndex][0], normals[faceIndex][1], normals[faceIndex][2])
-        glColor3f(colors[faceIndex][0], colors[faceIndex][1], colors[faceIndex][2])
+        #glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colors[faceIndex])
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, colors[faceIndex])
+        glMaterialfv(GL_FRONT, GL_AMBIENT, [x / 4.0 for x in colors[faceIndex]])
+        # glMaterialfv(GL_FRONT, GL_SPECULAR, [0.1 for _ in range(4)])
+        glMaterialfv(GL_FRONT, GL_SHININESS, [50.0])
 
         tri = tris[faceIndex * 2]
         #print(tri)
