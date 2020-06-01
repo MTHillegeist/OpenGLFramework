@@ -9,6 +9,7 @@ import DrawShapes as ds
 import numpy as np
 import Camera
 import Scene
+import SolarSystemScene
 
 print(sys.version)
 print("Testing of Main.py")
@@ -24,7 +25,7 @@ class Application(object):
         self.mouse_move_valid = False
         self.mouse_last_x = None
         self.mouse_last_y = None
-        self.scene = Scene.Scene1()
+        self.scene = SolarSystemScene.SolarSystemScene()
 
         #Culling type. GL_BACK is the default.
         #glCullFace(GL_BACK)
@@ -39,6 +40,22 @@ class Application(object):
 
         self.lastFrameTime = time.time()
 
+        # Drawing initializations.
+        red = (0.8, 0.1, 0.0, 1.0)
+        blue = (0.0, 0.0, 1.0, 1.0)
+
+        self.triangle1 = glGenLists(1)
+        glNewList(self.triangle1, GL_COMPILE)
+        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, red)
+        ds.TriangleEquil()
+        glEndList()
+
+        self.cube1 = glGenLists(1)
+        glNewList(self.cube1, GL_COMPILE)
+        glPolygonMode(GL_FRONT, GL_FILL)
+        ds.DrawCube()
+        glEndList()
+
     def main_loop(self):
         delta_t = time.time() - self.lastFrameTime
         self.lastFrameTime = time.time()
@@ -52,8 +69,37 @@ class Application(object):
     def draw(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glColor3f(1.0, 1.0, 1.0)
-        self.scene.draw()
+
+        # self.scene.draw()
+        glLoadIdentity()
+        cam = self.scene.camera
+        gluLookAt(cam.pos[0], cam.pos[1], cam.pos[2],
+                   cam.target[0], cam.target[1], cam.target[2],
+                   cam.up[0], cam.up[1], cam.up[2])
+        glLightfv(GL_LIGHT0, GL_POSITION, self.scene.light_pos)
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.5, 0.5, 0.5])
+        glLightfv(GL_LIGHT0, GL_AMBIENT, [0.0, 0.0, 0.0])
+        glLightfv(GL_LIGHT0, GL_SPECULAR, [0.5, 0.5, 0.5])
+
+        self.draw_planets()
+
+        glFlush()
         glutSwapBuffers()
+
+    def draw_planets(self):
+        for planet in self.scene.planets:
+            glPushMatrix()
+            glRotatef(planet.orbit_angle, 0.0, 1.0, 0.0)
+            glTranslatef(planet.distance, 0.0, 0.0)
+            if(planet.axis is not None):
+                x, y, z = planet.axis
+                glRotatef(planet.relative_angle, x, y, z)
+            glScalef(planet.size, planet.size, planet.size)
+
+            if(planet.shape == None):
+                glCallList(self.cube1)
+
+            glPopMatrix()
 
     def reshape(self, w, h):
         ratio = w / h
