@@ -60,6 +60,7 @@ class Application(object):
         num_lights = len(self.scene.lights)
 
         for light_num in range(min(num_lights, 8)):
+            print("Setting light " + str(light_num))
             glEnable(get_light_enum(light_num))
 
         if(num_lights > 8):
@@ -105,11 +106,10 @@ class Application(object):
 
         # Set lighting
         for index, light in enumerate(self.scene.lights):
-            print("Setting light " + str(index))
-            glLightfv(get_light_enum(index), GL_POSITION, self.scene.light_pos)
-            glLightfv(get_light_enum(index), GL_DIFFUSE, [0.5, 0.5, 0.5])
-            glLightfv(get_light_enum(index), GL_AMBIENT, [0.0, 0.0, 0.0])
-            glLightfv(get_light_enum(index), GL_SPECULAR, [0.5, 0.5, 0.5])
+            glLightfv(get_light_enum(index), GL_POSITION, light.pos)
+            glLightfv(get_light_enum(index), GL_DIFFUSE, light.diffuse)
+            glLightfv(get_light_enum(index), GL_AMBIENT, light.ambient)
+            glLightfv(get_light_enum(index), GL_SPECULAR, light.specular)
 
         self.draw_planets()
 

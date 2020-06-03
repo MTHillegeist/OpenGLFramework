@@ -52,7 +52,7 @@ class SolarSystemScene(sc.Scene):
         self.lights.append(self.light0)
 
         self.light1 = sc.Light()
-        self.light1.pos = np.array([0.0, 2.0, 0.0, 1.0])
+        self.light1.pos = np.array([0.0, 3.0, 0.0, 1.0])
         self.light1.diffuse = [0.5, 0.5, 0.5]
         self.light1.ambient = [0.0, 0.0, 0.0]
         self.light1.specular = [0.5, 0.5, 0.5]
