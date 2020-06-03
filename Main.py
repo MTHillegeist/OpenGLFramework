@@ -116,20 +116,29 @@ class Application(object):
         glFlush()
         glutSwapBuffers()
 
-    def draw_planets(self):
-        for planet in self.scene.planets:
+    def draw_planet_list(self, planets):
+        for planet in planets:
             glPushMatrix()
             glRotatef(planet.orbit_angle, 0.0, 1.0, 0.0)
             glTranslatef(planet.distance, 0.0, 0.0)
+            glTranslatef(*planet.barycenter[:3])
+            glPushMatrix()
             if(planet.axis is not None):
                 x, y, z = planet.axis
                 glRotatef(planet.relative_angle, x, y, z)
+
             glScalef(planet.size, planet.size, planet.size)
 
             if(planet.shape is None):
                 glCallList(self.cube1)
 
             glPopMatrix()
+            self.draw_planet_list(planet.moons)
+
+            glPopMatrix()
+
+    def draw_planets(self):
+        self.draw_planet_list(self.scene.planets)
 
     def reshape(self, w, h):
         ratio = w / h

@@ -35,6 +35,15 @@ class SolarSystemScene(sc.Scene):
         self.planet2.rotation_speed = 10.0
         self.planets.append(self.planet2)
 
+        self.moon0 = sc.Planet()
+        self.moon0.distance = 0.6
+        self.moon0.speed = 40.0
+        self.moon0.orbit_angle = 45.0
+        self.moon0.size = 0.1
+        self.moon0.axis = np.array([math.sqrt(2) / 2, 0, math.sqrt(2) / 2])
+        self.moon0.relative_angle = 50.0
+        self.moon0.rotation_speed = 5.0
+
         self.planet3 = sc.Planet()
         self.planet3.distance = 3.0
         self.planet3.speed = 40.0
@@ -43,6 +52,7 @@ class SolarSystemScene(sc.Scene):
         self.planet3.axis = np.array([math.sqrt(2) / 2, 0, math.sqrt(2) / 2])
         self.planet3.relative_angle = 50.0
         self.planet3.rotation_speed = 5.0
+        self.planet3.moons.append(self.moon0)
         self.planets.append(self.planet3)
 
         self.light0 = sc.Light()

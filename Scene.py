@@ -16,6 +16,7 @@ class Planet():
         self.distance = 0.0
         self.orbit_angle = 0.0
         self.speed = 0.0
+        self.barycenter = np.array([0.0, 0.0, 0.0, 1.0])
 
         self.relative_angle = 0.0
         self.axis = None
@@ -24,9 +25,13 @@ class Planet():
         self.size = 1.0
         self.shape = None
 
+        self.moons = []
+
     def update(self, delta_t):
         self.orbit_angle += delta_t * self.speed
         self.relative_angle += delta_t * self.rotation_speed
+        for moon in self.moons:
+            moon.update(delta_t)
 
 
 class Scene():
