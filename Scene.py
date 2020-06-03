@@ -5,7 +5,7 @@ import numpy as np
 
 class Light():
     def __init__(self):
-        self.pos = np.array([0.0, 0.0, 0.0])
+        self.pos = np.array([0.0, 0.0, 0.0, 1.0])
         self.diffuse = [1.0, 1.0, 1.0]
         self.ambient = [1.0, 1.0, 1.0]
         self.specular = [1.0, 1.0, 1.0]

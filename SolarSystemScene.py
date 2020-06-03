@@ -46,6 +46,17 @@ class SolarSystemScene(sc.Scene):
         self.planets.append(self.planet3)
 
         self.light0 = sc.Light()
+        self.light0.diffuse = [0.5, 0.5, 0.5]
+        self.light0.ambient = [0.0, 0.0, 0.0]
+        self.light0.specular = [0.5, 0.5, 0.5]
+        self.lights.append(self.light0)
+
+        self.light1 = sc.Light()
+        self.light1.pos = np.array([0.0, 2.0, 0.0, 1.0])
+        self.light1.diffuse = [0.5, 0.5, 0.5]
+        self.light1.ambient = [0.0, 0.0, 0.0]
+        self.light1.specular = [0.5, 0.5, 0.5]
+        self.lights.append(self.light1)
 
     def update(self, delta_t):
         for planet in self.planets:

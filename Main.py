@@ -1,4 +1,6 @@
-# from OpenGL import *
+# Normally, import * is a bad idea, but for these modules every function is
+# is prefixed with gl, glu, or glut so there is almost no chance of a namespace
+# issue.
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
@@ -10,6 +12,25 @@ import SolarSystemScene
 
 print(sys.version)
 print("Testing of Main.py")
+
+
+def get_light_enum(index):
+    if(index == 0):
+        return GL_LIGHT0
+    if(index == 1):
+        return GL_LIGHT1
+    if(index == 2):
+        return GL_LIGHT2
+    if(index == 3):
+        return GL_LIGHT3
+    if(index == 4):
+        return GL_LIGHT4
+    if(index == 5):
+        return GL_LIGHT5
+    if(index == 6):
+        return GL_LIGHT6
+    if(index == 7):
+        return GL_LIGHT7
 
 
 class Application(object):
@@ -34,7 +55,15 @@ class Application(object):
         glMatrixMode(GL_MODELVIEW)
 
         glEnable(GL_LIGHTING)
-        glEnable(GL_LIGHT0)
+
+        # Open GL only supports up to 8 lights.
+        num_lights = len(self.scene.lights)
+
+        for light_num in range(min(num_lights, 8)):
+            glEnable(get_light_enum(light_num))
+
+        if(num_lights > 8):
+            print("Warning: More than 8 lights detected in scene.")
 
         self.lastFrameTime = time.time()
 
@@ -74,10 +103,13 @@ class Application(object):
                   cam.target[0], cam.target[1], cam.target[2],
                   cam.up[0], cam.up[1], cam.up[2])
 
-        glLightfv(GL_LIGHT0, GL_POSITION, self.scene.light_pos)
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.5, 0.5, 0.5])
-        glLightfv(GL_LIGHT0, GL_AMBIENT, [0.0, 0.0, 0.0])
-        glLightfv(GL_LIGHT0, GL_SPECULAR, [0.5, 0.5, 0.5])
+        # Set lighting
+        for index, light in enumerate(self.scene.lights):
+            print("Setting light " + str(index))
+            glLightfv(get_light_enum(index), GL_POSITION, self.scene.light_pos)
+            glLightfv(get_light_enum(index), GL_DIFFUSE, [0.5, 0.5, 0.5])
+            glLightfv(get_light_enum(index), GL_AMBIENT, [0.0, 0.0, 0.0])
+            glLightfv(get_light_enum(index), GL_SPECULAR, [0.5, 0.5, 0.5])
 
         self.draw_planets()
 

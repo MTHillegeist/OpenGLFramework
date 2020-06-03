@@ -15,9 +15,10 @@ class Camera:
         # Normalize the vector.
         cross_vec = cross_vec / math.sqrt(np.dot(cross_vec, cross_vec))
 
-        rot_matrix_x = np.array([[cos(horizontal_angle), 0, sin(horizontal_angle)],
-                                [0, 1, 0],
-                                [-sin(horizontal_angle), 0, cos(horizontal_angle)]])
+        rot_matrix_x = np.array(
+            [[cos(horizontal_angle), 0, sin(horizontal_angle)],
+             [0, 1, 0],
+             [-sin(horizontal_angle), 0, cos(horizontal_angle)]])
 
         rot_matrix_cross = Camera.rotation_matrix(cross_vec, vertical_angle)
 
@@ -39,8 +40,8 @@ class Camera:
     # Pulled from stackoverflow.
     def rotation_matrix(axis, theta):
         """
-        Return the rotation matrix associated with counterclockwise rotation about
-        the given axis by theta radians.
+        Return the rotation matrix associated with counterclockwise rotation
+        about the given axis by theta radians.
         """
         axis = np.asarray(axis)
         axis = axis / sqrt(np.dot(axis, axis))
