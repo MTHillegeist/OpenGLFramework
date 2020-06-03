@@ -1,18 +1,16 @@
-#from OpenGL import *
+# from OpenGL import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
-import sys, time
-import math
-from math import sin,cos,sqrt,pi
+import sys
+import time
 import DrawShapes as ds
-import numpy as np
 import Camera
-import Scene
 import SolarSystemScene
 
 print(sys.version)
 print("Testing of Main.py")
+
 
 class Application(object):
 
@@ -27,9 +25,9 @@ class Application(object):
         self.mouse_last_y = None
         self.scene = SolarSystemScene.SolarSystemScene()
 
-        #Culling type. GL_BACK is the default.
-        #glCullFace(GL_BACK)
-        #glCullFace(GL_FRONT_AND_BACK)
+        # Culling type. GL_BACK is the default.
+        # glCullFace(GL_BACK)
+        # glCullFace(GL_FRONT_AND_BACK)
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
         # glDisable(GL_CULL_FACE)
@@ -42,7 +40,6 @@ class Application(object):
 
         # Drawing initializations.
         red = (0.8, 0.1, 0.0, 1.0)
-        blue = (0.0, 0.0, 1.0, 1.0)
 
         self.triangle1 = glGenLists(1)
         glNewList(self.triangle1, GL_COMPILE)
@@ -64,7 +61,7 @@ class Application(object):
         self.scene.update(delta_t)
 
         self.draw()
-        #self.draw_cube_test()
+        # self.draw_cube_test()
 
     def draw(self):
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
@@ -74,8 +71,9 @@ class Application(object):
         glLoadIdentity()
         cam = self.scene.camera
         gluLookAt(cam.pos[0], cam.pos[1], cam.pos[2],
-                   cam.target[0], cam.target[1], cam.target[2],
-                   cam.up[0], cam.up[1], cam.up[2])
+                  cam.target[0], cam.target[1], cam.target[2],
+                  cam.up[0], cam.up[1], cam.up[2])
+
         glLightfv(GL_LIGHT0, GL_POSITION, self.scene.light_pos)
         glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.5, 0.5, 0.5])
         glLightfv(GL_LIGHT0, GL_AMBIENT, [0.0, 0.0, 0.0])
@@ -96,7 +94,7 @@ class Application(object):
                 glRotatef(planet.relative_angle, x, y, z)
             glScalef(planet.size, planet.size, planet.size)
 
-            if(planet.shape == None):
+            if(planet.shape is None):
                 glCallList(self.cube1)
 
             glPopMatrix()
@@ -118,6 +116,7 @@ class Application(object):
 
     def mouse_input(self, button, state, x, y):
         self.scene.mouse_input(button, state, x, y)
+
 
 glutInit()
 glutInitDisplayMode(GLUT_DEPTH | GLUT_RGBA)
