@@ -137,7 +137,7 @@ class Application(object):
                 glMaterialfv(GL_FRONT, GL_DIFFUSE, mat.diffuse)
                 glMaterialfv(GL_FRONT, GL_AMBIENT, mat.ambient)
                 glMaterialfv(GL_FRONT, GL_SPECULAR, mat.specular)
-                glMaterialfv(GL_FRONT, GL_EMISSION, mat.emmissive)
+                glMaterialfv(GL_FRONT, GL_EMISSION, mat.emission)
                 glMaterialfv(GL_FRONT, GL_SHININESS, [mat.shininess])
                 glutSolidSphere(1.0, 50, 50)
 

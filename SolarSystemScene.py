@@ -9,14 +9,13 @@ class SolarSystemScene(sc.Scene):
         super(SolarSystemScene, self).__init__()
         # self.camera = Camera.Camera()
         self.camera.pos = np.array([0, 7, 7])
-        self.mat_spec = [1.0, 1.0, 1.0, 1.0]
-        self.mat_shin = [50.0]
         self.light_pos = [0.0, 0.0, 0.0, 1.0]
         self.global_ambient = [0.0, 0.0, 0.0, 1.0]
+        sun_color = [1.0, 0.9, 0.0]
 
         self.sun = sc.Planet()
         self.sun.size = 1.5
-        self.sun.material.emmissive = [1.0, 1.0, 1.0]
+        self.sun.material.emission = sun_color
         self.planets.append(self.sun)
 
         self.planet1 = sc.Planet()

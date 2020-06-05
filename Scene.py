@@ -15,7 +15,7 @@ class Material():
         self.diffuse = [1.0, 1.0, 1.0]
         self.ambient = [1.0, 1.0, 1.0]
         self.specular = [0.3, 0.3, 0.3]
-        self.emmissive = [0.0, 0.0, 0.0]
+        self.emission = [0.0, 0.0, 0.0]
         self.shininess = 0.5
 
 class Planet():
@@ -32,6 +32,9 @@ class Planet():
         self.size = 1.0
         self.shape = None
         self.material = Material()
+        # Planets are completely diffuse in space, so default them to 0.
+        self.material.specular = [0.0, 0.0, 0.0]
+        self.material.shininess = 0.0
 
         self.moons = []
 
