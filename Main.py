@@ -55,6 +55,7 @@ class Application(object):
         glMatrixMode(GL_MODELVIEW)
 
         glEnable(GL_LIGHTING)
+        glShadeModel(GL_SMOOTH)
 
         # Open GL only supports up to 8 lights.
         num_lights = len(self.scene.lights)
@@ -104,6 +105,8 @@ class Application(object):
                   cam.target[0], cam.target[1], cam.target[2],
                   cam.up[0], cam.up[1], cam.up[2])
 
+        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, self.scene.global_ambient)
+
         # Set lighting
         for index, light in enumerate(self.scene.lights):
             glLightfv(get_light_enum(index), GL_POSITION, light.pos)
@@ -130,7 +133,14 @@ class Application(object):
             glScalef(planet.size, planet.size, planet.size)
 
             if(planet.shape is None):
-                glCallList(self.cube1)
+                mat = planet.material
+                glMaterialfv(GL_FRONT, GL_DIFFUSE, mat.diffuse)
+                glMaterialfv(GL_FRONT, GL_AMBIENT, mat.ambient)
+                glMaterialfv(GL_FRONT, GL_SPECULAR, mat.specular)
+                glMaterialfv(GL_FRONT, GL_EMISSION, mat.emmissive)
+                glMaterialfv(GL_FRONT, GL_SHININESS, [mat.shininess])
+                glutSolidSphere(1.0, 50, 50)
+
 
             glPopMatrix()
             self.draw_planet_list(planet.moons)

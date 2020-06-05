@@ -7,76 +7,75 @@ from math import sin,cos,sqrt,pi
 import operator
 
 vertices = (
-    (-0.5, 0.5, 0.5),   #0
-    (-0.5, -0.5, 0.5),  #1
-    (0.5, -0.5, 0.5),   #2
-    (0.5, 0.5, 0.5),    #3
-    (0.5, 0.5, -0.5),   #4
-    (-0.5, 0.5, -0.5),  #5
-    (-0.5, -0.5, -0.5), #6
-    (0.5, -0.5, -0.5))  #7
+    (-0.5, 0.5, 0.5),    # 0
+    (-0.5, -0.5, 0.5),   # 1
+    (0.5, -0.5, 0.5),    # 2
+    (0.5, 0.5, 0.5),     # 3
+    (0.5, 0.5, -0.5),    # 4
+    (-0.5, 0.5, -0.5),   # 5
+    (-0.5, -0.5, -0.5),  # 6
+    (0.5, -0.5, -0.5))   # 7
 
 
 tris = (
-(0, 1, 2), (0, 2, 3), #Front
-(0, 3, 5), (5, 3, 4), #Top
-(1, 6, 7), (1, 7, 2), #Bottom
-(5, 1, 0), (5, 6, 1), #Left
-(3, 2, 7), (3, 7, 4), #right
-(5, 4, 7), (5, 7, 6)) #back
+        (0, 1, 2), (0, 2, 3),  # Front
+        (0, 3, 5), (5, 3, 4),  # Top
+        (1, 6, 7), (1, 7, 2),  # Bottom
+        (5, 1, 0), (5, 6, 1),  # Left
+        (3, 2, 7), (3, 7, 4),  # right
+        (5, 4, 7), (5, 7, 6))  # back
 
 normals = (
-(0.0, 0.0, 1.0),  #Front
-(0.0, 1.0, 0.0),  #Top
-(0.0, -1.0, 0.0), #Bottom
-(-1.0, 0.0, 0.0), #Left
-(1.0, 0.0, 0.0),  #Right
-(0.0, 0.0, -1.0)) #Back
+            (0.0, 0.0, 1.0),   # Front
+            (0.0, 1.0, 0.0),   # Top
+            (0.0, -1.0, 0.0),  # Bottom
+            (-1.0, 0.0, 0.0),  # Left
+            (1.0, 0.0, 0.0),   # Right
+            (0.0, 0.0, -1.0))  # Back
 
 colors = (
-(1.0, 0.0, 0.0),
-(0.0, 1.0, 0.0),
-(0.0, 0.0, 1.0),
-(1.0, 0.0, 1.0),
-(1.0, 1.0, 0.0),
-(0.0, 1.0, 1.0)
-)
+            (1.0, 0.0, 0.0),
+            (0.0, 1.0, 0.0),
+            (0.0, 0.0, 1.0),
+            (1.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0),
+            (0.0, 1.0, 1.0)
+         )
 
 
-
-#Draw a cube, dimensions of 1 all directions, centered at 0,0,0
-#Using this function to draw cubes since it will be easy to extend
-#in the future to color certain vertices, render points at the corners, etc.
+# Draw a cube, dimensions of 1 all directions, centered at 0,0,0
+# Using this function to draw cubes since it will be easy to extend
+# in the future to color certain vertices, render points at the corners, etc.
 def DrawCube():
 
     glBegin(GL_TRIANGLES)
 
     for faceIndex in range(0, 6):
-        #print("Begin drawing face %d" % faceIndex)
+        # print("Begin drawing face %d" % faceIndex)
         glNormal3f(normals[faceIndex][0], normals[faceIndex][1], normals[faceIndex][2])
-        #glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colors[faceIndex])
+        # glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, colors[faceIndex])
         glMaterialfv(GL_FRONT, GL_DIFFUSE, colors[faceIndex])
         glMaterialfv(GL_FRONT, GL_AMBIENT, [x / 4.0 for x in colors[faceIndex]])
         # glMaterialfv(GL_FRONT, GL_SPECULAR, [0.1 for _ in range(4)])
         glMaterialfv(GL_FRONT, GL_SHININESS, [50.0])
 
         tri = tris[faceIndex * 2]
-        #print(tri)
+        # print(tri)
 
         glVertex3fv(vertices[tri[0]])
         glVertex3fv(vertices[tri[1]])
         glVertex3fv(vertices[tri[2]])
 
         tri = tris[faceIndex * 2 + 1]
-        #print(tri)
+        # print(tri)
 
         glVertex3fv(vertices[tri[0]])
         glVertex3fv(vertices[tri[1]])
         glVertex3fv(vertices[tri[2]])
 
-        #print("End Drawing Face")
+        # print("End Drawing Face")
 
-        #Drawing front face
+        # Drawing front face
         # glNormal3f(normals[0][0], normals[0][1], normals[0][1])
         # glColor3f(1.0, 0.0, 0.0)
         # tri = tris[0]

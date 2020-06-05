@@ -8,13 +8,15 @@ class SolarSystemScene(sc.Scene):
     def __init__(self):
         super(SolarSystemScene, self).__init__()
         # self.camera = Camera.Camera()
-        self.camera.pos = np.array([0, 10, 10])
+        self.camera.pos = np.array([0, 7, 7])
         self.mat_spec = [1.0, 1.0, 1.0, 1.0]
         self.mat_shin = [50.0]
         self.light_pos = [0.0, 0.0, 0.0, 1.0]
+        self.global_ambient = [0.0, 0.0, 0.0, 1.0]
 
         self.sun = sc.Planet()
-        self.sun.size = 2.0
+        self.sun.size = 1.5
+        self.sun.material.emmissive = [1.0, 1.0, 1.0]
         self.planets.append(self.sun)
 
         self.planet1 = sc.Planet()
@@ -56,17 +58,17 @@ class SolarSystemScene(sc.Scene):
         self.planets.append(self.planet3)
 
         self.light0 = sc.Light()
-        self.light0.diffuse = [0.5, 0.5, 0.5]
+        self.light0.diffuse = [1.0, 1.0, 1.0] # [0.5, 0.5, 0.5]
         self.light0.ambient = [0.0, 0.0, 0.0]
-        self.light0.specular = [0.5, 0.5, 0.5]
+        self.light0.specular = [0.0, 0.0, 0.0]
         self.lights.append(self.light0)
 
-        self.light1 = sc.Light()
-        self.light1.pos = np.array([0.0, 3.0, 0.0, 1.0])
-        self.light1.diffuse = [0.5, 0.5, 0.5]
-        self.light1.ambient = [0.0, 0.0, 0.0]
-        self.light1.specular = [0.5, 0.5, 0.5]
-        self.lights.append(self.light1)
+        # self.light1 = sc.Light()
+        # self.light1.pos = np.array([0.0, 3.0, 0.0, 1.0])
+        # self.light1.diffuse = [0.5, 0.5, 0.5]
+        # self.light1.ambient = [0.0, 0.0, 0.0]
+        # self.light1.specular = [0.5, 0.5, 0.5]
+        # self.lights.append(self.light1)
 
     def update(self, delta_t):
         for planet in self.planets:

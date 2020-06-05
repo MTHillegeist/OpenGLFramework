@@ -7,9 +7,16 @@ class Light():
     def __init__(self):
         self.pos = np.array([0.0, 0.0, 0.0, 1.0])
         self.diffuse = [1.0, 1.0, 1.0]
-        self.ambient = [1.0, 1.0, 1.0]
+        self.ambient = [0.0, 0.0, 0.0]
         self.specular = [1.0, 1.0, 1.0]
 
+class Material():
+    def __init__(self):
+        self.diffuse = [1.0, 1.0, 1.0]
+        self.ambient = [1.0, 1.0, 1.0]
+        self.specular = [0.3, 0.3, 0.3]
+        self.emmissive = [0.0, 0.0, 0.0]
+        self.shininess = 0.5
 
 class Planet():
     def __init__(self):
@@ -24,6 +31,7 @@ class Planet():
 
         self.size = 1.0
         self.shape = None
+        self.material = Material()
 
         self.moons = []
 
@@ -40,6 +48,7 @@ class Scene():
         self.planets = []
         self.lights = []
         self.camera = Camera.Camera()
+        self.global_ambient = [0.1, 0.1, 0.1, 1.0]
 
     def update(self, delta_t):
         pass
