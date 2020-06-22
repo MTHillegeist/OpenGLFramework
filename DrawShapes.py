@@ -114,9 +114,12 @@ def DrawSkybox():
 
     for faceIndex in range(0, 6):
         glNormal3f(sky_box_normals[faceIndex][0], sky_box_normals[faceIndex][1], sky_box_normals[faceIndex][2])
-        glMaterialfv(GL_FRONT, GL_DIFFUSE, colors[faceIndex])
-        glMaterialfv(GL_FRONT, GL_AMBIENT, [x / 4.0 for x in colors[faceIndex]])
-        glMaterialfv(GL_FRONT, GL_SHININESS, [50.0])
+
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, [0.0, 0.0, 0.0])
+        glMaterialfv(GL_FRONT, GL_AMBIENT, [0.0, 0.0, 0.0])
+        glMaterialfv(GL_FRONT, GL_SPECULAR, [0.0, 0.0, 0.0])
+        glMaterialfv(GL_FRONT, GL_EMISSION, colors[faceIndex])
+        glMaterialfv(GL_FRONT, GL_SHININESS, [0.0])
 
         tri = sky_box_tris[faceIndex * 2]
         # print(tri)

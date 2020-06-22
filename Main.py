@@ -114,7 +114,7 @@ class Application(object):
         glLoadIdentity()
 
         # Draw Skybox
-
+        glDisable(GL_DEPTH_TEST)
         glPushMatrix()
 
         glScalef(8.0, 8.0, 8.0)
@@ -128,6 +128,8 @@ class Application(object):
         glCallList(self.skybox)
         #
         glPopMatrix()
+
+        glEnable(GL_DEPTH_TEST)
 
         # End Skybox
 
@@ -144,7 +146,7 @@ class Application(object):
             glLightfv(get_light_enum(index), GL_AMBIENT, light.ambient)
             glLightfv(get_light_enum(index), GL_SPECULAR, light.specular)
 
-        # self.draw_planets()
+        self.draw_planets()
         # glScalef(8.0, 8.0, 8.0)
         # glCallList(self.skybox)
 
@@ -171,8 +173,7 @@ class Application(object):
                 glMaterialfv(GL_FRONT, GL_SPECULAR, mat.specular)
                 glMaterialfv(GL_FRONT, GL_EMISSION, mat.emission)
                 glMaterialfv(GL_FRONT, GL_SHININESS, [mat.shininess])
-                # glutSolidSphere(1.0, 50, 50)
-                glCallList(self.skybox)
+                glutSolidSphere(1.0, 50, 50)
 
 
             glPopMatrix()
