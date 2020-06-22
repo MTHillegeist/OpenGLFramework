@@ -25,6 +25,14 @@ tris = (
         (3, 2, 7), (3, 7, 4),  # right
         (5, 4, 7), (5, 7, 6))  # back
 
+sky_box_tris = (
+        (0, 2, 1), (0, 3, 2),  # Front
+        (0, 5, 3), (5, 4, 3),  # Top
+        (1, 7, 6), (1, 2, 7),  # Bottom
+        (5, 0, 1), (5, 1, 6),  # Left
+        (3, 7, 2), (3, 4, 7),  # right
+        (5, 7, 4), (5, 6, 7))  # back
+
 normals = (
             (0.0, 0.0, 1.0),   # Front
             (0.0, 1.0, 0.0),   # Top
@@ -32,6 +40,14 @@ normals = (
             (-1.0, 0.0, 0.0),  # Left
             (1.0, 0.0, 0.0),   # Right
             (0.0, 0.0, -1.0))  # Back
+
+sky_box_normals = (
+            (0.0, 0.0, -1.0),   # Front
+            (0.0, -1.0, 0.0),   # Top
+            (0.0, 1.0, 0.0),  # Bottom
+            (1.0, 0.0, 0.0),  # Left
+            (-1.0, 0.0, 0.0),   # Right
+            (0.0, 0.0, 1.0))  # Back
 
 colors = (
             (1.0, 0.0, 0.0),
@@ -89,6 +105,32 @@ def DrawCube():
         # glVertex3fv(vertices[tri[2]])
 
 
+
+    glEnd()
+
+def DrawSkybox():
+
+    glBegin(GL_TRIANGLES)
+
+    for faceIndex in range(0, 6):
+        glNormal3f(sky_box_normals[faceIndex][0], sky_box_normals[faceIndex][1], sky_box_normals[faceIndex][2])
+        glMaterialfv(GL_FRONT, GL_DIFFUSE, colors[faceIndex])
+        glMaterialfv(GL_FRONT, GL_AMBIENT, [x / 4.0 for x in colors[faceIndex]])
+        glMaterialfv(GL_FRONT, GL_SHININESS, [50.0])
+
+        tri = sky_box_tris[faceIndex * 2]
+        # print(tri)
+
+        glVertex3fv(vertices[tri[0]])
+        glVertex3fv(vertices[tri[1]])
+        glVertex3fv(vertices[tri[2]])
+
+        tri = sky_box_tris[faceIndex * 2 + 1]
+        # print(tri)
+
+        glVertex3fv(vertices[tri[0]])
+        glVertex3fv(vertices[tri[1]])
+        glVertex3fv(vertices[tri[2]])
 
     glEnd()
 

@@ -51,6 +51,11 @@ class Application(object):
         # glCullFace(GL_FRONT_AND_BACK)
         glEnable(GL_CULL_FACE)
         glEnable(GL_DEPTH_TEST)
+        # glEnable(GL_BLEND)
+        # glBlendFunc(GL_SRC_ALPHA_SATURATE, GL_ONE)
+        # glEnable(GL_POLYGON_SMOOTH)
+        # glHint (GL_LINE_SMOOTH_HINT, GL_DONT_CARE)
+        glLineWidth (1.5)
         # glDisable(GL_CULL_FACE)
         glMatrixMode(GL_MODELVIEW)
 
@@ -84,6 +89,12 @@ class Application(object):
         ds.DrawCube()
         glEndList()
 
+        self.skybox = glGenLists(1)
+        glNewList(self.skybox, GL_COMPILE)
+        glPolygonMode(GL_FRONT, GL_FILL)
+        ds.DrawSkybox()
+        glEndList()
+
     def main_loop(self):
         delta_t = time.time() - self.lastFrameTime
         self.lastFrameTime = time.time()
@@ -95,17 +106,36 @@ class Application(object):
         # self.draw_cube_test()
 
     def draw(self):
+        cam = self.scene.camera
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
         glColor3f(1.0, 1.0, 1.0)
 
-        # self.scene.draw()
         glLoadIdentity()
-        cam = self.scene.camera
+
+        # Draw Skybox
+
+        glPushMatrix()
+
+        glScalef(8.0, 8.0, 8.0)
+
+        cam_direction = cam.target - cam.pos
+
+        gluLookAt(0.0, 0.0, 0.0,
+                  cam_direction[0], cam_direction[1], cam_direction[2],
+                  cam.up[0], cam.up[1], cam.up[2])
+
+        glCallList(self.skybox)
+        #
+        glPopMatrix()
+
+        # End Skybox
+
         gluLookAt(cam.pos[0], cam.pos[1], cam.pos[2],
                   cam.target[0], cam.target[1], cam.target[2],
                   cam.up[0], cam.up[1], cam.up[2])
 
-        glLightModelfv(GL_LIGHT_MODEL_AMBIENT, self.scene.global_ambient)
+        # glLightModelfv(GL_LIGHT_MODEL_AMBIENT, self.scene.global_ambient)
 
         # Set lighting
         for index, light in enumerate(self.scene.lights):
@@ -114,7 +144,9 @@ class Application(object):
             glLightfv(get_light_enum(index), GL_AMBIENT, light.ambient)
             glLightfv(get_light_enum(index), GL_SPECULAR, light.specular)
 
-        self.draw_planets()
+        # self.draw_planets()
+        # glScalef(8.0, 8.0, 8.0)
+        # glCallList(self.skybox)
 
         glFlush()
         glutSwapBuffers()
@@ -139,7 +171,8 @@ class Application(object):
                 glMaterialfv(GL_FRONT, GL_SPECULAR, mat.specular)
                 glMaterialfv(GL_FRONT, GL_EMISSION, mat.emission)
                 glMaterialfv(GL_FRONT, GL_SHININESS, [mat.shininess])
-                glutSolidSphere(1.0, 50, 50)
+                # glutSolidSphere(1.0, 50, 50)
+                glCallList(self.skybox)
 
 
             glPopMatrix()
