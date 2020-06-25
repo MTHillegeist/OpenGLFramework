@@ -11,7 +11,6 @@ import Camera
 import SolarSystemScene
 
 print(sys.version)
-print("Testing of Main.py")
 
 
 def get_light_enum(index):
@@ -62,6 +61,8 @@ class Application(object):
         glEnable(GL_LIGHTING)
         glShadeModel(GL_SMOOTH)
 
+
+
         # Open GL only supports up to 8 lights.
         num_lights = len(self.scene.lights)
 
@@ -95,6 +96,31 @@ class Application(object):
         ds.DrawSkybox()
         glEndList()
 
+        #Skybox texture
+        self.skybox_name = GLuint()
+        skybox_tex_dim = 64
+        self.skybox_tex = [[[] for _ in range(skybox_tex_dim)]
+                               for _ in range(skybox_tex_dim)]
+        for i in range(skybox_tex_dim):
+            for j in range(skybox_tex_dim):
+                color = ((((i&0x8)==0)^((j&0x8))==0)) * 255
+                self.skybox_tex[i][j].append(int(color))
+                self.skybox_tex[i][j].append(int(color))
+                self.skybox_tex[i][j].append(int(color))
+                self.skybox_tex[i][j].append(int(255))
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+
+        glGenTextures(1, self.skybox_name)
+        glBindTexture(GL_TEXTURE_2D, self.skybox_name)
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, skybox_tex_dim,
+                  skybox_tex_dim, 0, GL_RGBA, GL_UNSIGNED_BYTE, self.skybox_tex)
+
     def main_loop(self):
         delta_t = time.time() - self.lastFrameTime
         self.lastFrameTime = time.time()
@@ -115,6 +141,7 @@ class Application(object):
 
         # Draw Skybox
         glDisable(GL_DEPTH_TEST)
+        glEnable(GL_TEXTURE_2D);
         glPushMatrix()
 
         glScalef(8.0, 8.0, 8.0)
@@ -130,6 +157,7 @@ class Application(object):
         glPopMatrix()
 
         glEnable(GL_DEPTH_TEST)
+        glDisable(GL_TEXTURE_2D);
 
         # End Skybox
 

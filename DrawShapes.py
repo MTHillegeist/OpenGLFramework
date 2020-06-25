@@ -124,15 +124,21 @@ def DrawSkybox():
         tri = sky_box_tris[faceIndex * 2]
         # print(tri)
 
+        glTexCoord2f(0.0, 0.0)
         glVertex3fv(vertices[tri[0]])
+        glTexCoord2f(1.0, 1.0)
         glVertex3fv(vertices[tri[1]])
+        glTexCoord2f(0.0, 1.0)
         glVertex3fv(vertices[tri[2]])
 
         tri = sky_box_tris[faceIndex * 2 + 1]
         # print(tri)
 
+        glTexCoord2f(0.0, 0.0)
         glVertex3fv(vertices[tri[0]])
+        glTexCoord2f(1.0, 0.0)
         glVertex3fv(vertices[tri[1]])
+        glTexCoord2f(1.0, 1.0)
         glVertex3fv(vertices[tri[2]])
 
     glEnd()
