@@ -26,12 +26,12 @@ tris = (
         (5, 4, 7), (5, 7, 6))  # back
 
 sky_box_tris = (
-        (0, 2, 1), (0, 3, 2),  # Front
+        (3, 2, 1), (0, 3, 1),  # Front
         (3, 5, 4), (3, 0, 5),  # Top
         (1, 7, 6), (1, 2, 7),  # Bottom
         (5, 1, 6), (5, 0, 1),  # Left
         (3, 7, 2), (3, 4, 7),  # right
-        (5, 7, 4), (5, 6, 7))  # back
+        (5, 6, 7), (4, 5, 7))  # back
 
 normals = (
             (0.0, 0.0, 1.0),   # Front
@@ -126,17 +126,17 @@ def DrawSkybox():
 
         glTexCoord2f(0.0, 0.0)
         glVertex3fv(vertices[tri[0]])
-        glTexCoord2f(1.0, 1.0)
+        glTexCoord2f(1.0, 0.0)
         glVertex3fv(vertices[tri[1]])
-        glTexCoord2f(0.0, 1.0)
+        glTexCoord2f(1.0, 1.0)
         glVertex3fv(vertices[tri[2]])
 
         tri = sky_box_tris[faceIndex * 2 + 1]
         # print(tri)
 
-        glTexCoord2f(0.0, 0.0)
+        glTexCoord2f(0.0, 1.0)
         glVertex3fv(vertices[tri[0]])
-        glTexCoord2f(1.0, 0.0)
+        glTexCoord2f(0.0, 0.0)
         glVertex3fv(vertices[tri[1]])
         glTexCoord2f(1.0, 1.0)
         glVertex3fv(vertices[tri[2]])

@@ -97,29 +97,20 @@ class Application(object):
         glEndList()
 
         #Skybox texture
-        self.skybox_name = GLuint()
-        skybox_tex_dim = 64
-        self.skybox_tex = [[[] for _ in range(skybox_tex_dim)]
-                               for _ in range(skybox_tex_dim)]
-        for i in range(skybox_tex_dim):
-            for j in range(skybox_tex_dim):
-                color = ((((i&0x8)==0)^((j&0x8))==0)) * 255
-                self.skybox_tex[i][j].append(int(color))
-                self.skybox_tex[i][j].append(int(color))
-                self.skybox_tex[i][j].append(int(color))
-                self.skybox_tex[i][j].append(int(255))
+        if(self.scene.skybox_tex != None):
+            self.skybox_name = GLuint()
 
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
 
-        glGenTextures(1, self.skybox_name)
-        glBindTexture(GL_TEXTURE_2D, self.skybox_name)
+            glGenTextures(1, self.skybox_name)
+            glBindTexture(GL_TEXTURE_2D, self.skybox_name)
 
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, skybox_tex_dim,
-                  skybox_tex_dim, 0, GL_RGBA, GL_UNSIGNED_BYTE, self.skybox_tex)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
+            glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, self.scene.skybox_tex_dim,
+                      self.scene.skybox_tex_dim, 0, GL_RGBA, GL_UNSIGNED_BYTE, self.scene.skybox_tex)
 
     def main_loop(self):
         delta_t = time.time() - self.lastFrameTime
@@ -140,24 +131,25 @@ class Application(object):
         glLoadIdentity()
 
         # Draw Skybox
-        glDisable(GL_DEPTH_TEST)
-        glEnable(GL_TEXTURE_2D);
-        glPushMatrix()
+        if(self.scene.skybox_tex != None):
+            glDisable(GL_DEPTH_TEST)
+            glEnable(GL_TEXTURE_2D);
+            glPushMatrix()
 
-        glScalef(8.0, 8.0, 8.0)
+            glScalef(8.0, 8.0, 8.0)
 
-        cam_direction = cam.target - cam.pos
+            cam_direction = cam.target - cam.pos
 
-        gluLookAt(0.0, 0.0, 0.0,
-                  cam_direction[0], cam_direction[1], cam_direction[2],
-                  cam.up[0], cam.up[1], cam.up[2])
+            gluLookAt(0.0, 0.0, 0.0,
+                      cam_direction[0], cam_direction[1], cam_direction[2],
+                      cam.up[0], cam.up[1], cam.up[2])
 
-        glCallList(self.skybox)
-        #
-        glPopMatrix()
+            glCallList(self.skybox)
+            #
+            glPopMatrix()
 
-        glEnable(GL_DEPTH_TEST)
-        glDisable(GL_TEXTURE_2D);
+            glEnable(GL_DEPTH_TEST)
+            glDisable(GL_TEXTURE_2D);
 
         # End Skybox
 
@@ -174,7 +166,7 @@ class Application(object):
             glLightfv(get_light_enum(index), GL_AMBIENT, light.ambient)
             glLightfv(get_light_enum(index), GL_SPECULAR, light.specular)
 
-        self.draw_planets()
+        # self.draw_planets()
         # glScalef(8.0, 8.0, 8.0)
         # glCallList(self.skybox)
 

@@ -62,12 +62,37 @@ class SolarSystemScene(sc.Scene):
         self.light0.specular = [0.0, 0.0, 0.0]
         self.lights.append(self.light0)
 
+        self.skybox_tex_dim = 64
+        self.skybox_tex = [[[] for _ in range(self.skybox_tex_dim)]
+                               for _ in range(self.skybox_tex_dim)]
+
+        SolarSystemScene.texture_fill_gradient(self.skybox_tex, self.skybox_tex_dim)
+
         # self.light1 = sc.Light()
         # self.light1.pos = np.array([0.0, 3.0, 0.0, 1.0])
         # self.light1.diffuse = [0.5, 0.5, 0.5]
         # self.light1.ambient = [0.0, 0.0, 0.0]
         # self.light1.specular = [0.5, 0.5, 0.5]
         # self.lights.append(self.light1)
+
+    def texture_fill_checker(texture, dim):
+        for i in range(dim):
+            for j in range(dim):
+                color = ((((i&0x8)==0)^((j&0x8))==0)) * 255
+                texture[i][j].append(int(color))
+                texture[i][j].append(int(color))
+                texture[i][j].append(int(color))
+                texture[i][j].append(int(255))
+
+    def texture_fill_gradient(texture, dim):
+        for i in range(dim):
+            for j in range(dim):
+                gradient = (dim - j)/dim
+                color = gradient * 255
+                texture[i][j].append(int(color))
+                texture[i][j].append(int(color))
+                texture[i][j].append(int(color))
+                texture[i][j].append(int(255))
 
     def update(self, delta_t):
         for planet in self.planets:
